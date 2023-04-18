@@ -1,0 +1,51 @@
+import time
+import matplotlib.pyplot as plt
+import random
+
+parking_spots = [
+    {"id": 1, "position": (50, 50), "size": (100, 100), "occupied": False},
+    {"id": 2, "position": (200, 50), "size": (100, 100), "occupied": False},
+    {"id": 3, "position": (350, 50), "size": (100, 100), "occupied": False},
+    {"id": 4, "position": (500, 50), "size": (100, 100), "occupied": False},
+    {"id": 5, "position": (650, 50), "size": (100, 100), "occupied": False},
+]
+threshold = 0.5
+
+while True:
+    print(f"Parking Spot status")
+
+    fig, ax = plt.subplots()
+
+    ax.set_xlim([0, 800])
+    ax.set_ylim([0, 200])
+
+    for spot in parking_spots:
+        x, y = spot["position"]
+        w, h = spot["size"]
+        
+        color = "r" if spot["occupied"] else "g"
+        rect = plt.Rectangle((x, y), w, h, linewidth=5, edgecolor='y', facecolor=color)
+        ax.add_patch(rect)
+
+        ax.text(x + w/2, y + h/2, str(spot["id"]), ha='center', va='center')
+    plt.show()
+    
+    for i in range(5):
+        spot = random.choice(parking_spots)
+        if not spot["occupied"]:
+            spot["occupied"] = True
+            print(f"Parking spot {spot['id']} is now occupied")
+        else:
+            spot["occupied"] = False
+            print(f"Parking spot {spot['id']} is now vacant")
+        time.sleep(1)
+    print(f"Current status")
+    for spot in parking_spots:
+        occupancy = 1 if spot["occupied"] else 0
+        if occupancy > threshold:
+            status = "Occupied"
+        else:
+            status = "Vacant"
+        print(f"Parking spot {spot['id']} is {status}")
+
+    time.sleep(5)
